@@ -1,24 +1,13 @@
-# README
+### Ruby Version
+2.5.1
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Rails Version
+5.2
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Configuration
+1. Export environment variables for database: SEA_COMPFEST_DATABASE_USERNAME, SEA_COMPFEST_DATABASE_PASSWORD.
+2. Run *gem install pg* to install postgresql.
+3. Run *bundle install* to install Gemfile.
+4. Run *rake db:create* to create database.
+5. Test rails using *rails server*, check http://localhost:3000.
+6. Happy development!
