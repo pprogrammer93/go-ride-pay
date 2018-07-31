@@ -13,9 +13,8 @@ jobs:
           RAILS_ENV: test
       - image: circleci/postgres:9.6.9-alpine-postgis-ram
         environment:
-          POSTGRES_USER: sea-compfest
-          POSTGRES_DB: gopayride_test
-          POSTGRES_PASSWORD: unveilthefuture
+          SEA_COMPFEST_DATABASE_USERNAME: sea-compfest
+          SEA_COMPFEST_DATABASE_PASSWORD: unveilthefuture
     steps:
       - checkout
       - run:
