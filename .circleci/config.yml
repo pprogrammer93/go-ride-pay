@@ -1,0 +1,68 @@
+version: 2
+jobs:
+  build:
+    parallelism: 3
+    working_directory: ~/Documents/SEA/go-ride-pay
+    docker:
+      - image: circleci/ruby:2.5.1-stretch-node-browsers
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          PGHOST: 127.0.0.1
+          RAILS_ENV: test
+      - image: circleci/postgres:9.6.9-alpine-postgis-ram
+        environment:
+          POSTGRES_USER: sea-compfest
+          POSTGRES_DB: gopayride_test
+          POSTGRES_PASSWORD: unveilthefuture
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - restore_cache:
+          keys:
+            - go-ride-pay-v1-{{ checksum "Gemfile.lock" }}
+            - go-ride-pay-v1-
+      - run:
+          name: Bundle Install
+          command: bundle check || bundle install
+      - save_cache:
+          key: go-ride-pay-v1-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Database setup
+          command: bin/rails db:schema:load --trace
+      - run:
+          name: Run rspec in parallel
+          command: |
+            bundle exec rspec --profile 10 \
+                              --format RspecJunitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+  deploy-circleci:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:b3d11fca-a96e-4a4f-a1d8-1b200b49869f@git.heroku.com/go-ride-pay.git master
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy-circleci:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
