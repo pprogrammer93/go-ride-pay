@@ -10,14 +10,12 @@ jobs:
           BUNDLE_RETRY: 3
           BUNDLE_PATH: vendor/bundle
           PGHOST: 127.0.0.1
+          PGUSER: root
           RAILS_ENV: test
       - image: circleci/postgres:9.6.9-alpine
         environment:
-          POSTGRES_USER: sea-compfest
-          POSTGRES_PASSWORD: unveilthefuture
+          POSTGRES_USER: root
           POSTGRES_DB: gopayride_test
-          SEA_COMPFEST_DATABASE_USERNAME: sea-compfest
-          SEA_COMPFEST_DATABASE_PASSWORD: unveilthefuture
     steps:
       - checkout
       - run:
