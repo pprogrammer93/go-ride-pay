@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Deploy Master to Heroku
           command: |
-            git push https://heroku:b3d11fca-a96e-4a4f-a1d8-1b200b49869f@git.heroku.com/go-ride-pay.git master
+            git push https://heroku:b3d11fca-a96e-4a4f-a1d8-1b200b49869f@git.heroku.com/staging-goridepay.git master
 workflows:
   version: 2
   build-deploy:
