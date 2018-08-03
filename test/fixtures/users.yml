@@ -1,0 +1,4 @@
+cfx:
+  name: Compfest X Example
+  email: cfx@unveilthefuture.com
+  password_digest: <%= User.digest('password') %>
