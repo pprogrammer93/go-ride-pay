@@ -66,3 +66,7 @@ workflows:
           filters:
             branches:
               only: master
+general:
+  branches:
+    only:
+      - master
